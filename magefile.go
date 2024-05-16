@@ -262,7 +262,7 @@ func LinuxMusl386() error {
 		goos:          "linux",
 		cc:            "musl-gcc",
 		extra_name:    "-musl",
-		disable_cgo:   true,
+		// disable_cgo:   true,
 		extra_ldflags: "-linkmode external -extldflags \"-static\"",
 		arch:          "386"}.Run()
 }
@@ -273,6 +273,13 @@ func LinuxBare() error {
 		extra_tags: " release yara disable_gui ",
 		goos:       "linux",
 		arch:       "amd64"}.Run()
+}
+
+func Linux386() error {
+	return Builder{
+		extra_tags: " release yara disable_gui ",
+		goos:       "linux",
+		arch:       "386"}.Run()
 }
 
 func Freebsd() error {
