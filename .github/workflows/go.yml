@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    if: github.event.pull_request.merged
     name: Build
     # We used to build on ubuntu-18.04 but that is now deprecated by
     # GitHub. Earlier distributions will have to use the musl build.
@@ -64,6 +63,7 @@ jobs:
         go run make.go -v Linux
         # go run make.go -v LinuxMusl386
         go run make.go -v LinuxArm64
+        go run make.go -v Linux386
         go run make.go -v Windows
         go run make.go -v Windowsx86
         go run make.go -v DarwinBase
