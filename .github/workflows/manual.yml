@@ -1,0 +1,38 @@
+# Only trigger when a PR is committed.
+name: New Linux Build All Arches
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu:18.04
+    container:
+      image: pasqueque/pasqueque-repo:latest
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
+
+    - run: go version
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 gcc-mingw-w64 gcc-aarch64-linux-gnu 
+
+    
+    - name: Build All Architectures
+      # Uncomment the architectures you want here. NOTE: DarwinBase
+      # does not include yara or modules with C compilers needed.
+      run: |
+        mkdir ./output/
+        export PATH=$PATH:~/go/bin/
+        go run make.go -v Linux386
+
+    - name: StoreBinaries
+      uses: actions/upload-artifact@v3
+      with:
+        name: Binaries
+        path: output
